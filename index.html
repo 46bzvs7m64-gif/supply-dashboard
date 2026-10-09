@@ -3,109 +3,360 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>供应链运营分析看板</title>
+<title>供应链运营分析看板 · SCM Intelligence</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: "Microsoft YaHei","PingFang SC",sans-serif; color: #1a1a2e; background: #f4f5f9; padding: 16px; }
-  .container { max-width: 1100px; margin: 0 auto; }
-  h1 { font-size: 22px; color: #1a1a2e; margin-bottom: 4px; }
-  .subtitle { font-size: 12px; color: #888; margin-bottom: 16px; }
-  .nav-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
-  .tab { padding: 7px 18px; border: 1px solid #ddd; border-radius: 20px; cursor: pointer; font-size: 13px; background: #fff; transition: all .2s; }
-  .tab.active { background: #2563eb; color: #fff; border-color: #2563eb; }
-  .filter-row { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
-  .filter-row select, .filter-row input { padding: 5px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 12px; }
-  .kpi-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; margin-bottom: 16px; }
-  .kpi { background: #fff; border-radius: 10px; padding: 14px; text-align: center; }
-  .kpi .label { font-size: 11px; color: #888; }
-  .kpi .value { font-size: 22px; font-weight: 700; color: #1a1a2e; margin: 4px 0; }
-  .kpi .delta { font-size: 11px; }
-  .delta.up { color: #dc2626; }
-  .delta.down { color: #059669; }
-  .delta.warn { color: #d97706; }
-  .section { background: #fff; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
-  .section h2 { font-size: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-  .section h2 .hint { font-size: 11px; color: #999; font-weight: 400; }
-  table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  th { text-align: left; padding: 8px 6px; border-bottom: 2px solid #e5e7eb; color: #6b7280; font-weight: 600; font-size: 11px; }
-  td { padding: 7px 6px; border-bottom: 1px solid #f3f4f6; }
-  .badge { padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
-  .badge.red { background: #fee2e2; color: #dc2626; }
-  .badge.yellow { background: #fef3c7; color: #d97706; }
-  .badge.green { background: #d1fae5; color: #059669; }
-  .badge.gray { background: #f3f4f6; color: #6b7280; }
-  .bar-wrap { width: 60px; height: 6px; background: #e5e7eb; border-radius: 3px; display: inline-block; vertical-align: middle; }
-  .bar-fill { height: 100%; border-radius: 3px; }
-  .alert-box { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 8px; padding: 10px 14px; margin-bottom: 8px; font-size: 12px; display: flex; align-items: center; gap: 8px; }
-  .alert-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .chart-row { display: flex; gap: 16px; }
-  .chart-row .section { flex: 1; }
-  svg { display: block; }
-  .footer { text-align: center; font-size: 11px; color: #999; margin-top: 16px; }
+:root{
+  --ink:#0E2138; --ink-2:#16304f; --ink-soft:#3c5168; --muted:#7c8aa0;
+  --paper:#eef1f6; --card:#ffffff; --line:#e4e8f0; --line-soft:#f0f2f7;
+  --gold:#b08d4e; --gold-2:#c7a862; --gold-deep:#8f6f36;
+  --red:#bd3b31; --red-bg:#fbecea;
+  --amber:#bd8424; --amber-bg:#faf1de;
+  --teal:#178a75; --teal-bg:#e4f3f0;
+  --gray:#8590a2; --gray-bg:#eef1f5;
+  --shadow:0 1px 2px rgba(14,33,56,.05),0 10px 30px -16px rgba(14,33,56,.18);
+  --shadow-hover:0 2px 4px rgba(14,33,56,.06),0 18px 40px -18px rgba(14,33,56,.28);
+  --num:"Segoe UI",system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;color:var(--ink);background:var(--paper);line-height:1.5;-webkit-font-smoothing:antialiased}
+.num{font-family:var(--num);font-variant-numeric:tabular-nums}
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px 8px}
+
+/* ============ 报头 ============ */
+.masthead{position:relative;background:linear-gradient(155deg,#0a1c34 0%,#143152 52%,#0e2543 100%);color:#fff;overflow:hidden}
+.masthead::before{content:"";position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+  background-size:46px 46px;mask-image:linear-gradient(180deg,#000 0%,transparent 92%)}
+.masthead::after{content:"";position:absolute;right:-120px;top:-160px;width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(circle,rgba(199,168,98,.22),transparent 62%)}
+.mh-inner{position:relative;max-width:1240px;margin:0 auto;padding:26px 24px 0}
+.mh-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
+.brand{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.32em;color:rgba(255,255,255,.72);font-weight:600}
+.brand .mark{width:26px;height:26px;border:1px solid rgba(199,168,98,.7);border-radius:6px;display:grid;place-items:center;
+  background:linear-gradient(135deg,rgba(199,168,98,.22),rgba(199,168,98,.05));color:var(--gold-2);font-size:12px;font-family:var(--num)}
+.classify{font-size:10px;letter-spacing:.24em;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.18);padding:4px 12px;border-radius:20px}
+.mh-title{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap}
+.mh-title h1{font-size:34px;font-weight:700;letter-spacing:.02em;line-height:1.15}
+.mh-title .en{font-size:11px;letter-spacing:.42em;color:var(--gold-2);padding-bottom:7px;font-weight:600}
+.mh-meta{display:flex;border-top:1px solid rgba(255,255,255,.1);margin-top:26px;flex-wrap:wrap}
+.mi{padding:14px 26px 14px 0;margin-right:26px;border-right:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:3px}
+.mi:last-child{border-right:0}
+.mi .k{font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,.5)}
+.mi .v{font-size:14px;font-weight:600}
+.mi .v small{font-size:11px;color:rgba(255,255,255,.55);font-weight:400;margin-left:3px}
+.verdict{position:relative;background:linear-gradient(90deg,rgba(199,168,98,.16),rgba(199,168,98,.05) 55%,transparent);
+  border-top:1px solid rgba(199,168,98,.35);margin-top:24px;padding:15px 0;display:flex;gap:14px;align-items:center}
+.verdict .tag{flex-shrink:0;font-size:10px;letter-spacing:.28em;color:var(--gold-2);font-weight:700;border:1px solid rgba(199,168,98,.5);padding:5px 12px;border-radius:4px}
+.verdict p{font-size:13.5px;color:rgba(255,255,255,.88);max-width:1000px}
+.verdict b{color:#fff}
+
+/* ============ 通用 ============ */
+.sec{margin-top:28px}
+.sec-head{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.sec-head .no{font-family:var(--num);font-size:13px;font-weight:700;letter-spacing:.1em;
+  background:linear-gradient(135deg,var(--gold-2),var(--gold-deep));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sec-head h2{font-size:17px;font-weight:700}
+.sec-head .rule{flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+.sec-head .note{font-size:11px;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+.rise{opacity:0;animation:rise .7s cubic-bezier(.22,.68,.32,1) forwards}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+/* ============ 指挥栏 ============ */
+.command{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 16px;flex-wrap:wrap}
+.tabs{display:flex;gap:4px;background:#f3f6fa;border:1px solid var(--line);border-radius:10px;padding:4px}
+.tab{display:flex;align-items:center;gap:8px;padding:8px 18px;border-radius:7px;font-size:13px;font-weight:600;color:var(--ink-soft);
+  cursor:pointer;border:0;background:transparent;font-family:inherit;transition:all .2s}
+.tab .idx{font-family:var(--num);font-size:10px;opacity:.55}
+.tab:hover{color:var(--ink)}
+.tab.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(14,33,56,.12)}
+.tab.on .idx{color:var(--gold)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.filters select{padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#fff;font-family:inherit;
+  color:var(--ink);outline:none;cursor:pointer}
+.filters select:focus{border-color:var(--gold-2)}
+.btn{padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.btn-o{background:#fff;border:1px solid var(--line);color:var(--ink-soft)}
+.btn-o:hover{border-color:var(--gold-2);color:var(--ink)}
+.btn-d{background:var(--ink);border:1px solid var(--ink);color:#fff}
+.btn-d:hover{background:#1d3d63}
+
+/* ============ KPI ============ */
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.kpi{position:relative;padding:18px 18px 16px;overflow:hidden;transition:transform .25s,box-shadow .25s}
+.kpi:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover)}
+.kpi::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px}
+.kpi.k-red::after{background:linear-gradient(180deg,var(--red),#8f2a22)}
+.kpi.k-amber::after{background:linear-gradient(180deg,var(--amber),#8f6218)}
+.kpi.k-teal::after{background:linear-gradient(180deg,var(--teal),#0e6353)}
+.kpi.k-gold::after{background:linear-gradient(180deg,var(--gold-2),var(--gold-deep))}
+.kpi .lab{font-size:11.5px;color:var(--muted);font-weight:500;display:flex;justify-content:space-between;align-items:center}
+.kpi .lab .en{font-size:8.5px;letter-spacing:.2em;opacity:.7}
+.kpi .val{font-size:30px;font-weight:700;margin:7px 0 2px;line-height:1.1;font-family:var(--num);letter-spacing:-.01em}
+.kpi.k-red .val{color:var(--red)}.kpi.k-amber .val{color:var(--amber)}.kpi.k-teal .val{color:var(--teal)}
+.kpi .sub{font-size:10.5px;color:var(--muted)}
+.kpi .sub b{font-weight:700}
+.kpi.k-red .sub b{color:var(--red)}.kpi.k-amber .sub b{color:var(--amber)}.kpi.k-teal .sub b{color:var(--teal)}
+
+/* ============ 预警 ============ */
+.alert-card{padding:6px 8px}
+.ai{display:flex;align-items:center;gap:14px;padding:13px 14px;border-bottom:1px solid var(--line-soft)}
+.ai:last-child{border-bottom:0}
+.ai .ic{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;flex-shrink:0}
+.ai.high .ic{background:var(--red-bg);color:var(--red)}
+.ai.mid .ic{background:var(--amber-bg);color:var(--amber)}
+.ai .tx{font-size:12.5px;color:var(--ink-soft)}
+.ai .tx b{color:var(--ink)}
+.ai .act-tag{margin-left:auto;flex-shrink:0;font-size:10.5px;font-weight:600;padding:5px 12px;border-radius:6px;letter-spacing:.04em}
+.ai.high .act-tag{background:var(--red-bg);color:var(--red)}
+.ai.mid .act-tag{background:var(--amber-bg);color:var(--amber)}
+
+/* ============ 图表 ============ */
+.chart-grid{display:grid;grid-template-columns:1.7fr 1fr;gap:16px}
+.chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.chart-card{padding:20px 22px}
+.chart-card h3{font-size:13.5px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.chart-card h3 span{font-size:10px;letter-spacing:.14em;color:var(--muted);font-weight:500}
+.chart-svg{margin-top:14px;width:100%;display:block}
+.donut-wrap{display:flex;align-items:center;gap:18px;margin-top:16px}
+.donut{position:relative;width:146px;height:146px;flex-shrink:0}
+.donut svg{transform:rotate(-90deg)}
+.donut .dc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.donut .dc b{font-size:28px;font-family:var(--num);line-height:1}
+.donut .dc small{font-size:9.5px;color:var(--muted);letter-spacing:.12em;margin-top:4px}
+.legend{display:flex;flex-direction:column;gap:10px;flex:1}
+.lg{display:flex;align-items:center;gap:8px;font-size:12px}
+.lg i{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+.lg .n{margin-left:auto;font-family:var(--num);font-weight:700;font-size:13px}
+.lg .p{color:var(--muted);font-size:11px;font-family:var(--num);width:40px;text-align:right}
+
+.hbars{margin-top:16px;display:flex;flex-direction:column;gap:14px}
+.hb .top{display:flex;font-size:11.5px;margin-bottom:5px}
+.hb .top .t{color:var(--ink-soft);font-weight:600}
+.hb .top .c{margin-left:auto;color:var(--muted);font-family:var(--num)}
+.hb .top .c b{color:var(--ink);font-size:12.5px}
+.hb .track{height:8px;background:var(--gray-bg);border-radius:4px;overflow:hidden}
+.hb .fill{height:100%;border-radius:4px}
+
+/* ============ 表格 ============ */
+.tbl-card{padding:18px 20px 10px}
+.tbl-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.tbl-head h3{font-size:13.5px;font-weight:700}
+.tbl-head span{font-size:10.5px;color:var(--muted)}
+.tbl-scroll{overflow-x:auto;margin:0 -20px;padding:0 20px}
+table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:1040px}
+thead th{text-align:left;padding:10px;font-size:10.5px;letter-spacing:.1em;color:var(--muted);font-weight:600;
+  background:#fafbfd;border-bottom:1px solid var(--line);white-space:nowrap}
+thead th.r,tbody td.r{text-align:right}
+tbody td{padding:9px 10px;border-bottom:1px solid var(--line-soft);white-space:nowrap}
+tbody tr{transition:background .15s}
+tbody tr:hover{background:#f7f9fc}
+td .code{font-family:var(--num);font-size:11.5px;color:var(--muted)}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.pill i{width:6px;height:6px;border-radius:50%;background:currentColor}
+.p-red{background:var(--red-bg);color:var(--red)}
+.p-amber{background:var(--amber-bg);color:var(--amber)}
+.p-teal{background:var(--teal-bg);color:var(--teal)}
+.p-gray{background:var(--gray-bg);color:var(--gray)}
+.mini-track{display:inline-block;width:54px;height:5px;background:var(--gray-bg);border-radius:3px;overflow:hidden;margin-right:8px;vertical-align:middle}
+.mini-fill{display:block;height:100%;border-radius:3px}
+
+/* ============ 供应商计分卡 ============ */
+.score-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:16px}
+.scard{padding:16px 16px 0;overflow:hidden;transition:transform .25s,box-shadow .25s}
+.scard:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover)}
+.scard .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.scard .nm{font-size:14px;font-weight:700}
+.scard .rate{font-size:30px;font-weight:700;font-family:var(--num);margin:6px 0 0;line-height:1}
+.scard .rate small{font-size:13px;color:var(--muted)}
+.scard dl{margin-top:12px;display:flex;flex-direction:column;gap:6px;font-size:11px;padding-bottom:14px}
+.scard dl div{display:flex;justify-content:space-between}
+.scard dl dt{color:var(--muted)}.scard dl dd{font-weight:600;font-family:var(--num)}
+.scard .bar{height:4px;background:var(--gray-bg);margin:0 -16px}
+.scard .bar i{display:block;height:100%}
+
+.empty{text-align:center;color:var(--muted);font-size:12.5px;padding:34px 0}
+
+/* ============ 页脚 ============ */
+.footer{margin-top:44px;background:linear-gradient(160deg,#0a1c34,#10294a);color:rgba(255,255,255,.55)}
+.ft-inner{max-width:1240px;margin:0 auto;padding:26px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.ft-l{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.2em}
+.ft-l .mark{width:24px;height:24px;border:1px solid rgba(199,168,98,.6);border-radius:6px;display:grid;place-items:center;color:var(--gold-2);font-size:11px;font-family:var(--num)}
+.ft-r{font-size:11px}
+.ft-r a{color:rgba(255,255,255,.75);text-decoration:none;border-bottom:1px solid rgba(199,168,98,.4)}
+.goldline{height:2px;background:linear-gradient(90deg,transparent,var(--gold-2) 30%,var(--gold-deep) 70%,transparent)}
+
+@media(max-width:1020px){
+  .kpi-grid{grid-template-columns:repeat(3,1fr)}
+  .score-grid{grid-template-columns:repeat(2,1fr)}
+  .chart-grid,.chart-grid-2{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  .mh-title h1{font-size:26px}
+  .kpi-grid,.score-grid{grid-template-columns:1fr}
+  .command{flex-direction:column;align-items:stretch}
+  .filters{justify-content:flex-start}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<div class="container">
-  <h1>供应链运营分析看板</h1>
-  <div class="subtitle">演示数据按真实供应链运营月报字段结构自建 · 原生 JS + SVG 零依赖单文件</div>
 
-  <div class="nav-tabs">
-    <div class="tab active" onclick="switchTab('overview')">运营总览</div>
-    <div class="tab" onclick="switchTab('sku')">SKU 周转分析</div>
-    <div class="tab" onclick="switchTab('supplier')">供应商交付</div>
-  </div>
-
-  <div class="filter-row">
-    <select id="f-cat"><option value="">全品类</option><option>数码</option><option>家居</option><option>食品</option></select>
-    <select id="f-warehouse"><option value="">全仓库</option><option>华东仓</option><option>华南仓</option><option>华北仓</option></select>
-    <select id="f-alert"><option value="">全部状态</option><option>缺货</option><option>滞销</option><option>正常</option></select>
-    <input type="text" id="f-search" placeholder="搜索 SKU 名称…" style="width:180px;">
-    <button onclick="applyFilters()" style="padding:5px 14px;border:1px solid #ddd;border-radius:6px;font-size:12px;cursor:pointer;background:#fff;">筛选</button>
-    <button onclick="exportCSV()" style="padding:5px 14px;border:1px solid #ddd;border-radius:6px;font-size:12px;cursor:pointer;background:#fff;">导出 CSV</button>
-  </div>
-
-  <!-- ========== Tab: 运营总览 ========== -->
-  <div id="tab-overview" class="tab-content">
-    <div class="kpi-grid" id="kpi-grid"></div>
-
-    <div class="section">
-      <h2>智能诊断预警 <span class="hint">基于周转/缺货率/供应商准时率自动判定</span></h2>
-      <div id="alerts"></div>
+<!-- ==================== 报头 ==================== -->
+<header class="masthead">
+  <div class="mh-inner">
+    <div class="mh-top">
+      <div class="brand"><span class="mark">S</span>SCM INTELLIGENCE SUITE</div>
+      <div class="classify">内部资料 · 演示数据集</div>
     </div>
+    <div class="mh-title">
+      <h1>供应链运营分析看板</h1>
+      <div class="en">OPERATIONS COMMAND CENTER</div>
+    </div>
+    <div class="mh-meta">
+      <div class="mi"><span class="k">报告周期</span><span class="v">2026-W40</span></div>
+      <div class="mi"><span class="k">数据截至</span><span class="v">2026-10-09</span></div>
+      <div class="mi"><span class="k">在管 SKU</span><span class="v">15<small>个</small></span></div>
+      <div class="mi"><span class="k">履约仓库</span><span class="v">3<small>座</small></span></div>
+      <div class="mi"><span class="k">合作供应商</span><span class="v">5<small>家</small></span></div>
+    </div>
+    <div class="verdict">
+      <span class="tag">执行摘要</span>
+      <p><b>5 个 SKU</b> 现货周转低于 7 天，需结合在途量在本周内安排补货；<b>5 个 SKU</b> 周转超过 45 天进入滞销，占压库存约 <b>1.0 万件</b>，建议启动清仓与停采评审；供应商<b>三只松</b>准时率 84% 低于 85% 红线，建议启动备选供应商导入。</p>
+    </div>
+  </div>
+</header>
 
-    <div class="chart-row">
-      <div class="section">
-        <h2>12 周库存金额趋势 <span class="hint">万元</span></h2>
-        <svg id="chart-inventory" width="500" height="180"></svg>
+<main class="wrap">
+
+  <!-- ============ 指挥栏 ============ -->
+  <section class="sec rise" style="animation-delay:.05s">
+    <div class="card command">
+      <div class="tabs" id="tabs">
+        <button class="tab on" data-t="overview"><span class="idx">01</span>运营总览</button>
+        <button class="tab" data-t="sku"><span class="idx">02</span>SKU 周转分析</button>
+        <button class="tab" data-t="supplier"><span class="idx">03</span>供应商交付</button>
       </div>
-      <div class="section">
-        <h2>ABC 分类分布 <span class="hint">按销售额贡献</span></h2>
-        <svg id="chart-abc" width="320" height="180"></svg>
+      <div class="filters">
+        <select id="f-cat"><option value="">全品类</option><option>数码</option><option>家居</option><option>食品</option></select>
+        <select id="f-wh"><option value="">全仓库</option><option>华东仓</option><option>华南仓</option><option>华北仓</option></select>
+        <select id="f-st"><option value="">全部状态</option><option value="low">缺货预警</option><option value="slow">滞销预警</option><option value="normal">正常</option></select>
+        <button class="btn btn-d" id="apply">筛选</button>
+        <button class="btn btn-o" id="reset">重置</button>
+        <button class="btn btn-o" id="csv">导出 CSV</button>
       </div>
     </div>
+  </section>
+
+  <!-- ==================== Tab: 总览 ==================== -->
+  <div id="tab-overview">
+
+    <!-- KPI -->
+    <section class="sec rise" style="animation-delay:.1s">
+      <div class="sec-head">
+        <span class="no">01</span><h2>核心指标</h2><span class="rule"></span><span class="note">KEY INDICATORS</span>
+      </div>
+      <div class="kpi-grid" id="kpis"></div>
+    </section>
+
+    <!-- 智能预警 -->
+    <section class="sec rise" style="animation-delay:.16s">
+      <div class="sec-head">
+        <span class="no">02</span><h2>智能诊断预警</h2><span class="rule"></span><span class="note">基于周转 / 覆盖 / 准时率自动判定</span>
+      </div>
+      <div class="card alert-card" id="alerts"></div>
+    </section>
+
+    <!-- 图表 -->
+    <section class="sec rise" style="animation-delay:.22s">
+      <div class="sec-head">
+        <span class="no">03</span><h2>库存与组合分析</h2><span class="rule"></span><span class="note">INVENTORY & PORTFOLIO</span>
+      </div>
+      <div class="chart-grid">
+        <div class="card chart-card">
+          <h3>12 周库存金额趋势 <span>单位：万元</span></h3>
+          <svg class="chart-svg" viewBox="0 0 600 240" id="ch-trend" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+        <div class="card chart-card">
+          <h3>ABC 分类分布 <span>按销售额贡献</span></h3>
+          <div class="donut-wrap">
+            <div class="donut">
+              <svg width="146" height="146" viewBox="0 0 146 146" id="ch-abc"></svg>
+              <div class="dc"><b>15</b><small>SKU</small></div>
+            </div>
+            <div class="legend" id="abc-lg"></div>
+          </div>
+        </div>
+      </div>
+      <div class="chart-grid-2">
+        <div class="card chart-card">
+          <h3>品类销售贡献 <span>近 28 天</span></h3>
+          <div class="hbars" id="ch-cat"></div>
+        </div>
+        <div class="card chart-card">
+          <h3>仓库周转健康度 <span>平均周转天数</span></h3>
+          <div class="hbars" id="ch-wh"></div>
+        </div>
+      </div>
+    </section>
   </div>
 
-  <!-- ========== Tab: SKU 周转 ========== -->
-  <div id="tab-sku" class="tab-content" style="display:none;">
-    <div class="section">
-      <h2>SKU 周转与库存分析 <span class="hint">红色=滞销(>45天) / 黄色=偏低(<7天) / 绿色=正常</span></h2>
-      <table id="sku-table"><thead></thead><tbody></tbody></table>
-    </div>
+  <!-- ==================== Tab: SKU ==================== -->
+  <div id="tab-sku" style="display:none">
+    <section class="sec rise" style="animation-delay:.1s">
+      <div class="sec-head">
+        <span class="no">01</span><h2>SKU 周转与库存分析</h2><span class="rule"></span><span class="note">红色=周转&lt;7天偏低 / 灰色=&gt;45天滞销 / 青色=正常</span>
+      </div>
+      <div class="card tbl-card">
+        <div class="tbl-head"><h3>SKU 明细</h3><span id="sku-count"></span></div>
+        <div class="tbl-scroll">
+          <table>
+            <thead><tr>
+              <th>SKU</th><th>名称</th><th>品类</th><th>仓库</th><th class="r">日均销量</th>
+              <th class="r">库存</th><th class="r">在途</th><th class="r">覆盖天数</th><th class="r">周转天数</th>
+              <th>状态</th><th>供应商</th><th class="r">准时率</th>
+            </tr></thead>
+            <tbody id="sku-tb"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
   </div>
 
-  <!-- ========== Tab: 供应商 ========== -->
-  <div id="tab-supplier" class="tab-content" style="display:none;">
-    <div class="section">
-      <h2>供应商交付绩效 <span class="hint">准时率 < 85% 红色预警建议切换备选</span></h2>
-      <table id="supplier-table"><thead></thead><tbody></tbody></table>
-    </div>
+  <!-- ==================== Tab: 供应商 ==================== -->
+  <div id="tab-supplier" style="display:none">
+    <section class="sec rise" style="animation-delay:.1s">
+      <div class="sec-head">
+        <span class="no">01</span><h2>供应商交付绩效</h2><span class="rule"></span><span class="note">准时率 &lt; 85% 红色预警，建议切换备选</span>
+      </div>
+      <div class="score-grid" id="scores"></div>
+      <div class="card tbl-card">
+        <div class="tbl-head"><h3>供应商绩效明细</h3><span>近 90 天滚动统计</span></div>
+        <div class="tbl-scroll">
+          <table style="min-width:860px">
+            <thead><tr>
+              <th>供应商</th><th class="r">总订单</th><th class="r">准时交付</th><th class="r">准时率</th>
+              <th class="r">采购额（元）</th><th class="r">来料不良率</th><th>评级</th><th>管理动作</th>
+            </tr></thead>
+            <tbody id="sup-tb"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
   </div>
 
-  <div class="footer">供应链运营分析看板 · 演示数据集 · github.com/46bzvs7m64-gif/supply-dashboard</div>
-</div>
+</main>
+
+<div class="goldline"></div>
+<footer class="footer">
+  <div class="ft-inner">
+    <div class="ft-l"><span class="mark">S</span>SCM INTELLIGENCE SUITE · OPERATIONS COMMAND CENTER</div>
+    <div class="ft-r">演示数据集 · <a href="https://github.com/46bzvs7m64-gif/supply-dashboard">github.com/46bzvs7m64-gif/supply-dashboard</a> · 更新于 2026-10-09</div>
+  </div>
+</footer>
 
 <script>
-// ========== 演示数据（按真实供应链字段结构自建）==========
+// ============ 演示数据（按真实供应链月报字段结构自建）============
 const SKUS = [
   {sku:"SP-001",name:"蓝牙耳机 Pro",cat:"数码",wh:"华东仓",sales28:4200,stock:1850,intransit:600,supplier:"恒达电子",ontime:92},
   {sku:"SP-002",name:"无线充电板",cat:"数码",wh:"华东仓",sales28:2800,stock:320,intransit:200,supplier:"恒达电子",ontime:88},
@@ -123,8 +374,7 @@ const SKUS = [
   {sku:"SP-014",name:"蓝牙音箱",cat:"数码",wh:"华南仓",sales28:1600,stock:480,intransit:200,supplier:"中芯微",ontime:78},
   {sku:"SP-015",name:"收纳整理箱",cat:"家居",wh:"华东仓",sales28:520,stock:2400,intransit:0,supplier:"光禾家居",ontime:93},
 ];
-
-const INVENTORY_12W = [520,580,610,590,640,680,710,690,730,760,740,780];
+const INV12 = [520,580,610,590,640,680,710,690,730,760,740,780];
 const SUPPLIERS = [
   {name:"恒达电子",total:28,ontime:26,rate:93,revenue:1250000,reject:1.2},
   {name:"中芯微",total:22,ontime:19,rate:86,revenue:890000,reject:2.1},
@@ -133,197 +383,222 @@ const SUPPLIERS = [
   {name:"三只松",total:25,ontime:21,rate:84,revenue:980000,reject:1.8},
 ];
 
-// ========== 计算函数 ==========
-function calcSku(s) {
-  const dailyAvg = s.sales28 / 28;
-  const turnoverDays = dailyAvg > 0 ? Math.round(s.stock / dailyAvg) : 999;
-  const stockoutRisk = dailyAvg > 0 ? Math.round((s.stock / (s.stock + s.intransit)) * 100) : 0;
-  let status = "正常", cls = "green";
-  if (turnoverDays > 45) { status = "滞销"; cls = "red"; }
-  else if (turnoverDays < 7) { status = "偏低"; cls = "yellow"; }
-  const stockoutRate = dailyAvg > 0 ? Math.max(0, Math.round((1 - s.stock / (dailyAvg * 14)) * 100)) : 0;
-  return { ...s, dailyAvg: dailyAvg.toFixed(1), turnoverDays, stockoutRisk, status, cls, stockoutRate };
+// ============ 计算 ============
+function enrich(s){
+  const daily=s.sales28/28;
+  const turn=daily>0?Math.round(s.stock/daily):999;
+  const cover=daily>0?+((s.stock+s.intransit)/daily).toFixed(1):999;
+  const st = turn>45 ? "slow" : turn<7 ? "low" : "normal";
+  return {...s,daily:+daily.toFixed(1),turn,cover,st};
 }
-function calcAll() { return SKUS.map(calcSku); }
-
-// ========== Tab 切换 ==========
-function switchTab(tab) {
-  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-  event.target.classList.add("active");
-  document.querySelectorAll(".tab-content").forEach(c => c.style.display = "none");
-  document.getElementById("tab-" + tab).style.display = "block";
-  if (tab === "overview") renderOverview();
-  if (tab === "sku") renderSkuTable();
-  if (tab === "supplier") renderSupplierTable();
+function getList(){
+  const cat=document.getElementById("f-cat").value;
+  const wh=document.getElementById("f-wh").value;
+  const st=document.getElementById("f-st").value;
+  return SKUS.map(enrich).filter(s=>
+    (!cat||s.cat===cat)&&(!wh||s.wh===wh)&&(!st||s.st===st));
 }
 
-// ========== 筛选 ==========
-function applyFilters() {
-  // 简单实现：在 SKU 表格中过滤
-  const cat = document.getElementById("f-cat").value;
-  const wh = document.getElementById("f-warehouse").value;
-  const search = document.getElementById("f-search").value.toLowerCase();
-  const filtered = SKUS.filter(s =>
-    (!cat || s.cat === cat) &&
-    (!wh || s.wh === wh) &&
-    (!search || s.name.toLowerCase().includes(search))
-  );
-  renderSkuTable(filtered);
-  renderOverview(filtered);
-  renderSupplierTable(filtered);
-}
-function exportCSV() {
-  const rows = calcAll();
-  const headers = ["SKU","名称","品类","仓库","日均销量","库存","在途","周转天数","缺货率","状态","供应商"];
-  const csv = [headers.join(",")];
-  rows.forEach(r => {
-    csv.push([r.sku,r.name,r.cat,r.wh,r.dailyAvg,r.stock,r.intransit,r.turnoverDays,r.stockoutRate+"%",r.status,r.supplier].join(","));
-  });
-  const blob = new Blob(["\ufeff" + csv.join("\n")], { type: "text/csv" });
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "供应链SKU分析.csv";
-  a.click();
-}
+// ============ Tab ============
+let curTab="overview";
+document.getElementById("tabs").addEventListener("click",e=>{
+  const b=e.target.closest(".tab");if(!b)return;
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("on"));
+  b.classList.add("on");curTab=b.dataset.t;
+  ["overview","sku","supplier"].forEach(t=>document.getElementById("tab-"+t).style.display=t===curTab?"block":"none");
+  render();
+});
 
-// ========== 渲染：总览 ==========
-function renderOverview() {
-  const data = calcAll();
-  const totalStockValue = data.reduce((a, b) => a + b.stock * 50, 0); // 假设均价 50
-  const avgTurnover = Math.round(data.reduce((a, b) => a + b.turnoverDays, 0) / data.length);
-  const stockoutCount = data.filter(s => s.turnoverDays < 7).length;
-  const slowCount = data.filter(s => s.turnoverDays > 45).length;
-  const avgOntime = Math.round(SUPPLIERS.reduce((a, b) => a + b.rate, 0) / SUPPLIERS.length);
+// ============ 渲染总览 ============
+function renderOverview(list){
+  const stockVal=list.reduce((a,b)=>a+b.stock*50,0);
+  const avgTurn=list.length?Math.round(list.reduce((a,b)=>a+b.turn,0)/list.length):0;
+  const lowN=list.filter(s=>s.turn<7).length;
+  const slowN=list.filter(s=>s.turn>45).length;
+  const avgOn=Math.round(SUPPLIERS.reduce((a,b)=>a+b.rate,0)/SUPPLIERS.length);
 
-  const kpis = [
-    { label: "总库存金额", value: (totalStockValue / 10000).toFixed(1) + "万", delta: "+5.2% vs 上周", cls: "up" },
-    { label: "平均周转天数", value: avgTurnover + "天", delta: avgTurnover > 30 ? "偏高" : "正常", cls: avgTurnover > 30 ? "warn" : "down" },
-    { label: "缺货预警 SKU", value: stockoutCount, delta: stockoutCount > 2 ? "需立即补货" : "可控", cls: stockoutCount > 2 ? "up" : "down" },
-    { label: "滞销 SKU", value: slowCount, delta: slowCount > 0 ? "建议清仓" : "无", cls: slowCount > 0 ? "warn" : "down" },
-    { label: "供应商平均准时率", value: avgOntime + "%", delta: avgOntime < 85 ? "偏低" : "正常", cls: avgOntime < 85 ? "warn" : "down" },
+  const kpis=[
+    {c:"gold",lab:"总库存金额",en:"INVENTORY VALUE",val:(stockVal/10000).toFixed(1)+"万",sub:"环比上周 <b>+5.2%</b>"},
+    {c: avgTurn>30?"amber":"teal",lab:"平均周转天数",en:"TURNOVER DAYS",val:avgTurn,sub:avgTurn>30?"高于 30 天<b>预警线</b>":"处于<b>健康区间</b>"},
+    {c: lowN>2?"red":"teal",lab:"缺货预警 SKU",en:"STOCK-OUT RISK",val:lowN,sub:lowN>2?"需<b>立即补货</b>":"风险<b>可控</b>"},
+    {c: slowN>0?"amber":"teal",lab:"滞销 SKU",en:"DEAD STOCK",val:slowN,sub:slowN>0?"建议<b>清仓 / 停采</b>":"<b>无</b>滞销"},
+    {c: avgOn<85?"amber":"teal",lab:"供应商平均准时率",en:"ON-TIME RATE",val:avgOn+"%",sub:avgOn<85?"低于<b>目标值</b>":"达成<b>服务目标</b>"},
   ];
-  document.getElementById("kpi-grid").innerHTML = kpis.map(k =>
-    `<div class="kpi"><div class="label">${k.label}</div><div class="value">${k.value}</div><div class="delta ${k.cls}">${k.delta}</div></div>`
-  ).join("");
+  document.getElementById("kpis").innerHTML=kpis.map(k=>`
+    <div class="card kpi k-${k.c}">
+      <div class="lab">${k.lab}<span class="en">${k.en}</span></div>
+      <div class="val">${k.val}</div><div class="sub">${k.sub}</div>
+    </div>`).join("");
 
-  // 智能诊断预警
-  const alerts = [];
-  data.filter(s => s.turnoverDays < 7).forEach(s => {
-    alerts.push({ dot: "#dc2626", text: `<b>${s.name}</b>（${s.sku}）库存仅够 ${s.turnoverDays} 天，建议<b>立即补货</b>，在途 ${s.intransit} 件` });
-  });
-  data.filter(s => s.turnoverDays > 45).forEach(s => {
-    alerts.push({ dot: "#d97706", text: `<b>${s.name}</b>（${s.sku}）周转 ${s.turnoverDays} 天，滞销库存 ${s.stock} 件，建议<b>清仓促销</b>或停采` });
-  });
-  SUPPLIERS.filter(s => s.rate < 85).forEach(s => {
-    alerts.push({ dot: "#dc2626", text: `供应商 <b>${s.name}</b> 准时率 ${s.rate}%（${s.ontime}/${s.total}），低于 85% 阈值，建议<b>切换备选供应商</b>` });
-  });
-  if (alerts.length === 0) {
-    document.getElementById("alerts").innerHTML = '<div style="color:#999;font-size:12px;padding:10px;">暂无预警</div>';
-  } else {
-    document.getElementById("alerts").innerHTML = alerts.map(a =>
-      `<div class="alert-box"><div class="alert-dot" style="background:${a.dot}"></div>${a.text}</div>`
-    ).join("");
+  // 预警
+  const rows=[];
+  list.filter(s=>s.turn<7).forEach(s=>rows.push({lv:"high",
+    tx:`<b>${s.name}</b>（${s.sku}）现货仅够销售 <b>${s.turn} 天</b>，在途 ${s.intransit} 件`,act:"立即补货"}));
+  list.filter(s=>s.turn>45).forEach(s=>rows.push({lv:"mid",
+    tx:`<b>${s.name}</b>（${s.sku}）周转 <b>${s.turn} 天</b>，滞销库存 ${s.stock} 件`,act:"清仓 / 停采"}));
+  SUPPLIERS.filter(s=>s.rate<85).forEach(s=>rows.push({lv:"high",
+    tx:`供应商 <b>${s.name}</b> 准时率 <b>${s.rate}%</b>（${s.ontime}/${s.total}），低于 85% 阈值`,act:"导入备选"}));
+  const icon=`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 2.5 18a2 2 0 0 0 1.7 3h15.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>`;
+  document.getElementById("alerts").innerHTML = rows.length
+    ? rows.map(r=>`<div class="ai ${r.lv}"><div class="ic">${icon}</div><div class="tx">${r.tx}</div><span class="act-tag">${r.act}</span></div>`).join("")
+    : '<div class="empty">当前筛选条件下暂无预警</div>';
+
+  drawTrend();
+  drawAbc(list);
+  drawCats(list);
+  drawWh(list);
+}
+
+// ============ 12周趋势面积图 ============
+function drawTrend(){
+  const W=600,H=240,pl=46,pr=18,pt=22,pb=34,cw=W-pl-pr,ch=H-pt-pb;
+  const mn=480,mx=820,avg=INV12.reduce((a,b)=>a+b,0)/INV12.length;
+  const X=i=>pl+i*cw/(INV12.length-1);
+  const Y=v=>pt+ch-(v-mn)/(mx-mn)*ch;
+  let g="";
+  for(let i=0;i<=4;i++){
+    const v=mn+(mx-mn)*i/4,y=Y(v);
+    g+=`<line x1="${pl}" y1="${y}" x2="${W-pr}" y2="${y}" stroke="#edf0f5"/>
+        <text x="${pl-8}" y="${y+3.5}" text-anchor="end" font-size="10" fill="#9aa7ba">${Math.round(v)}</text>`;
   }
-
-  // 12周库存趋势
-  drawLineChart("chart-inventory", INVENTORY_12W, 520, 780, "#dc2626");
-  // ABC 分类
-  drawAbcChart("chart-abc", data);
+  const line=INV12.map((v,i)=>`${X(i)},${Y(v)}`).join(" ");
+  const area=`${pl},${pt+ch} ${line} ${W-pr},${pt+ch}`;
+  const dots=INV12.map((v,i)=>`<circle cx="${X(i)}" cy="${Y(v)}" r="${i===INV12.length-1?4.5:2.6}" fill="#fff" stroke="#bd3b31" stroke-width="${i===INV12.length-1?2.5:1.6}"/>`).join("");
+  const xl=INV12.map((v,i)=>i%2===0?`<text x="${X(i)}" y="${H-10}" text-anchor="middle" font-size="9.5" fill="#9aa7ba">W${i+1}</text>`:"").join("");
+  document.getElementById("ch-trend").innerHTML=`
+    <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#bd3b31" stop-opacity=".26"/><stop offset="1" stop-color="#bd3b31" stop-opacity="0"/>
+    </linearGradient></defs>
+    ${g}
+    <line x1="${pl}" y1="${Y(avg)}" x2="${W-pr}" y2="${Y(avg)}" stroke="#b08d4e" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="${W-pr}" y="${Y(avg)-6}" text-anchor="end" font-size="10" fill="#b08d4e">均值 ${Math.round(avg)}</text>
+    <polygon points="${area}" fill="url(#g1)"/>
+    <polyline points="${line}" fill="none" stroke="#bd3b31" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+    ${dots}${xl}
+    <text x="${X(INV12.length-1)}" y="${Y(INV12[INV12.length-1])-12}" text-anchor="middle" font-size="11" font-weight="700" fill="#bd3b31">${INV12[INV12.length-1]}</text>`;
 }
 
-// ========== 渲染：SKU 表格 ==========
-function renderSkuTable(list) {
-  const data = (list || SKUS).map(calcSku);
-  const headers = ["SKU","名称","品类","仓库","日均销量","库存","在途","周转天数","缺货率","状态","供应商","准时率"];
-  document.querySelector("#sku-table thead").innerHTML = "<tr>" + headers.map(h => `<th>${h}</th>`).join("") + "</tr>";
-  document.querySelector("#sku-table tbody").innerHTML = data.map(r => `
-    <tr>
-      <td>${r.sku}</td><td>${r.name}</td><td>${r.cat}</td><td>${r.wh}</td>
-      <td>${r.dailyAvg}</td><td>${r.stock}</td><td>${r.intransit}</td>
-      <td><span class="badge ${r.cls}">${r.turnoverDays}天</span></td>
-      <td>${r.stockoutRate}%</td>
-      <td><span class="badge ${r.cls}">${r.status}</span></td>
-      <td>${r.supplier}</td>
-      <td><span class="bar-wrap"><span class="bar-fill" style="width:${r.ontime}%;background:${r.ontime<85?'#dc2626':'#059669'}"></span></span> ${r.ontime}%</td>
-    </tr>
-  `).join("");
+// ============ ABC 环形图 ============
+function drawAbc(list){
+  const sorted=[...list].sort((a,b)=>b.sales28-a.sales28);
+  const total=sorted.reduce((a,b)=>a+b.sales28,0)||1;
+  let cum=0;const cs={A:0,B:0,C:0};const shares={A:0,B:0,C:0};
+  sorted.forEach(s=>{
+    cum+=s.sales28/total*100;
+    const k=cum<=70?"A":cum<=90?"B":"C";cs[k]++;shares[k]+=s.sales28;
+  });
+  const col={A:"#b08d4e",B:"#178a75",C:"#8590a2"};
+  const R=58,CIRC=2*Math.PI*R,sw=18;let off=0,segs="";
+  ["A","B","C"].forEach(k=>{
+    const frac=cs[k]/(list.length||1);
+    segs+=`<circle cx="73" cy="73" r="${R}" fill="none" stroke="${col[k]}" stroke-width="${sw}"
+      stroke-dasharray="${(frac*CIRC).toFixed(2)} ${(CIRC-frac*CIRC).toFixed(2)}" stroke-dashoffset="${(-off*CIRC).toFixed(2)}"/>`;
+    off+=frac;
+  });
+  document.getElementById("ch-abc").innerHTML=
+    `<circle cx="73" cy="73" r="${R}" fill="none" stroke="#f0f2f7" stroke-width="${sw}"/>${segs}`;
+  document.getElementById("abc-lg").innerHTML=["A","B","C"].map(k=>
+    `<div class="lg"><i style="background:${col[k]}"></i>${k} 类 · ${cs[k]} 个<span class="p">${(shares[k]/total*100).toFixed(0)}%</span><span class="n">${cs[k]}</span></div>`
+  ).join("");
 }
 
-// ========== 渲染：供应商表格 ==========
-function renderSupplierTable() {
-  const headers = ["供应商","总单数","准时交付","准时率","采购额(元)","不良率","状态"];
-  document.querySelector("#supplier-table thead").innerHTML = "<tr>" + headers.map(h => `<th>${h}</th>`).join("") + "</tr>";
-  document.querySelector("#supplier-table tbody").innerHTML = SUPPLIERS.map(s => {
-    const cls = s.rate >= 90 ? "green" : s.rate >= 85 ? "yellow" : "red";
-    const status = s.rate >= 90 ? "优秀" : s.rate >= 85 ? "关注" : "预警";
+// ============ 品类 / 仓库 条形 ============
+function drawCats(list){
+  const m={};list.forEach(s=>m[s.cat]=(m[s.cat]||0)+s.sales28);
+  const tot=Object.values(m).reduce((a,b)=>a+b,0)||1;
+  const col={数码:"#16304f",家居:"#b08d4e",食品:"#178a75"};
+  const rows=Object.entries(m).sort((a,b)=>b[1]-a[1]);
+  const mx=Math.max(...rows.map(r=>r[1]));
+  document.getElementById("ch-cat").innerHTML=rows.map(([k,v])=>
+    `<div class="hb"><div class="top"><span class="t">${k}</span><span class="c"><b>${v.toLocaleString()}</b> 件 · ${(v/tot*100).toFixed(1)}%</span></div>
+    <div class="track"><div class="fill" style="width:${v/mx*100}%;background:${col[k]||"#8590a2"}"></div></div></div>`).join("");
+}
+function drawWh(list){
+  const whs=["华东仓","华南仓","华北仓"];
+  const rows=whs.map(w=>{
+    const xs=list.filter(s=>s.wh===w);
+    return {w,avg:xs.length?Math.round(xs.reduce((a,b)=>a+b.turn,0)/xs.length):0,n:xs.length};
+  }).filter(r=>r.n>0);
+  const scale=120;
+  document.getElementById("ch-wh").innerHTML=rows.map(r=>{
+    const c=r.avg>45?"#bd3b31":r.avg>30?"#bd8424":"#178a75";
+    const st=r.avg>45?"周转过慢":r.avg>30?"需要关注":"运行健康";
+    return `<div class="hb"><div class="top"><span class="t">${r.w} · ${st}</span><span class="c"><b>${r.avg}</b> 天 · ${r.n} SKU</span></div>
+    <div class="track"><div class="fill" style="width:${Math.min(100,r.avg/scale*100)}%;background:${c}"></div></div></div>`;
+  }).join("");
+}
+
+// ============ SKU 表 ============
+function renderSku(list){
+  document.getElementById("sku-count").textContent=`共 ${list.length} 个 SKU`;
+  document.getElementById("sku-tb").innerHTML=list.length?list.map(s=>{
+    const c=s.st==="low"?"p-red":s.st==="slow"?"p-gray":"p-teal";
+    const lab=s.st==="low"?"库存偏低":s.st==="slow"?"滞销":"正常";
+    const covC=s.st==="low"?"#bd3b31":s.st==="slow"?"#8590a2":"#178a75";
+    const onC=s.ontime<85?"#bd3b31":"#178a75";
     return `<tr>
-      <td><b>${s.name}</b></td><td>${s.total}</td><td>${s.ontime}</td>
-      <td><span class="badge ${cls}">${s.rate}%</span></td>
-      <td>${s.revenue.toLocaleString()}</td><td>${s.reject}%</td>
-      <td><span class="badge ${cls}">${status}</span></td>
+      <td><span class="code">${s.sku}</span></td><td>${s.name}</td><td>${s.cat}</td><td>${s.wh}</td>
+      <td class="r num">${s.daily}</td><td class="r num">${s.stock}</td><td class="r num">${s.intransit}</td>
+      <td class="r"><span class="mini-track"><span class="mini-fill" style="width:${Math.min(100,s.cover/90*100)}%;background:${covC}"></span></span><span class="num">${s.cover}</span></td>
+      <td class="r num">${s.turn}</td>
+      <td><span class="pill ${c}"><i></i>${lab}</span></td><td>${s.supplier}</td>
+      <td class="r"><span class="mini-track"><span class="mini-fill" style="width:${s.ontime}%;background:${onC}"></span></span><span class="num">${s.ontime}%</span></td>
+    </tr>`;
+  }).join(""):'<tr><td colspan="12" class="empty">没有符合筛选条件的 SKU</td></tr>';
+}
+
+// ============ 供应商 ============
+function renderSupplier(){
+  document.getElementById("scores").innerHTML=SUPPLIERS.map(s=>{
+    const c=s.rate>=90?"#178a75":s.rate>=85?"#bd8424":"#bd3b31";
+    const lab=s.rate>=90?"优秀":s.rate>=85?"关注":"预警";
+    return `<div class="card scard">
+      <div class="top"><span class="nm">${s.name}</span><span class="pill" style="background:${c}18;color:${c}">${lab}</span></div>
+      <div class="rate" style="color:${c}">${s.rate}<small>%</small></div>
+      <dl>
+        <div><dt>准时 / 总单</dt><dd>${s.ontime} / ${s.total}</dd></div>
+        <div><dt>采购额</dt><dd>¥${s.revenue.toLocaleString()}</dd></div>
+        <div><dt>来料不良率</dt><dd>${s.reject}%</dd></div>
+      </dl>
+      <div class="bar"><i style="width:${s.rate}%;background:${c}"></i></div>
+    </div>`;
+  }).join("");
+
+  document.getElementById("sup-tb").innerHTML=SUPPLIERS.map(s=>{
+    const c=s.rate>=90?"p-teal":s.rate>=85?"p-amber":"p-red";
+    const lab=s.rate>=90?"A · 优秀":s.rate>=85?"B · 关注":"C · 预警";
+    const act=s.rate>=90?"保持合作，优先分配份额":s.rate>=85?"限期改善，月度复盘":"启动备选供应商导入";
+    return `<tr>
+      <td><b>${s.name}</b></td><td class="r num">${s.total}</td><td class="r num">${s.ontime}</td>
+      <td class="r"><span class="pill ${c}">${s.rate}%</span></td>
+      <td class="r num">${s.revenue.toLocaleString()}</td><td class="r num">${s.reject}%</td>
+      <td><span class="pill ${c}"><i></i>${lab}</span></td><td style="color:var(--ink-soft)">${act}</td>
     </tr>`;
   }).join("");
 }
 
-// ========== SVG 图表 ==========
-function drawLineChart(id, data, min, max, color) {
-  const el = document.getElementById(id);
-  const w = el.getAttribute("width"), h = el.getAttribute("height");
-  const pad = { l: 40, r: 15, t: 15, b: 25 };
-  const cw = w - pad.l - pad.r, ch = h - pad.t - pad.b;
-  const stepX = cw / (data.length - 1);
-  const points = data.map((v, i) => `${pad.l + i * stepX},${pad.t + ch - ((v - min) / (max - min)) * ch}`).join(" ");
-  const bars = data.map((v, i) => {
-    const x = pad.l + i * stepX - 6;
-    const y = pad.t + ch - ((v - min) / (max - min)) * ch;
-    return `<rect x="${x}" y="${y}" width="12" height="${pad.t + ch - y}" fill="${color}" opacity="0.15"/>`;
-  }).join("");
-  el.innerHTML = `
-    <line x1="${pad.l}" y1="${pad.t+ch}" x2="${pad.l+cw}" y2="${pad.t+ch}" stroke="#e5e7eb"/>
-    <line x1="${pad.l}" y1="${pad.t}" x2="${pad.l}" y2="${pad.t+ch}" stroke="#e5e7eb"/>
-    <text x="${pad.l-5}" y="${pad.t+8}" text-anchor="end" font-size="10" fill="#999">${max}</text>
-    <text x="${pad.l-5}" y="${pad.t+ch+3}" text-anchor="end" font-size="10" fill="#999">${min}</text>
-    ${bars}
-    <polyline points="${points}" fill="none" stroke="${color}" stroke-width="2"/>
-    ${data.map((v, i) => `<circle cx="${pad.l + i * stepX}" cy="${pad.t + ch - ((v - min) / (max - min)) * ch}" r="3" fill="${color}"/>`).join("")}
-    ${data.map((v, i) => i % 2 === 0 ? `<text x="${pad.l + i * stepX}" y="${h - 5}" text-anchor="middle" font-size="9" fill="#999">W${i + 1}</text>` : "").join("")}
-  `;
+// ============ 统一渲染 ============
+function render(){
+  const list=getList();
+  if(curTab==="overview")renderOverview(list);
+  else if(curTab==="sku")renderSku(list);
+  else renderSupplier();
 }
-
-function drawAbcChart(id, data) {
-  const el = document.getElementById(id);
-  const w = 320, h = 180;
-  const sorted = [...data].sort((a, b) => (b.sales28 * 50) - (a.sales28 * 50));
-  const totalRev = sorted.reduce((a, b) => a + b.sales28 * 50, 0);
-  let cumPct = 0;
-  const cats = sorted.map(s => {
-    const pct = (s.sales28 * 50 / totalRev * 100);
-    cumPct += pct;
-    let cls = cumPct <= 70 ? "A" : cumPct <= 90 ? "B" : "C";
-    return { ...s, pct, cum: cumPct, cls };
-  });
-  const aCount = cats.filter(c => c.cls === "A").length;
-  const bCount = cats.filter(c => c.cls === "B").length;
-  const cCount = cats.filter(c => c.cls === "C").length;
-  const colors = { A: "#dc2626", B: "#d97706", C: "#059669" };
-  const barW = 18, gap = 4, startX = 40;
-  const maxH = h - 40;
-  el.innerHTML = `
-    <text x="${w/2}" y="15" text-anchor="middle" font-size="11" fill="#888">A类(高价值): ${aCount}个 | B类(中): ${bCount}个 | C类(低): ${cCount}个</text>
-    ${cats.map((c, i) => {
-      const bh = Math.max(2, (c.pct / 30) * maxH);
-      const x = startX + i * (barW + gap);
-      return `<rect x="${x}" y="${h - 15 - bh}" width="${barW}" height="${bh}" fill="${colors[c.cls]}" rx="2"/>
-              <text x="${x + barW/2}" y="${h - 3}" text-anchor="middle" font-size="8" fill="#999">${i+1}</text>`;
-    }).join("")}
-    <text x="${startX}" y="${h-15-maxH-2}" font-size="9" fill="#dc2626">■ A类(≤70%)</text>
-    <text x="${startX+90}" y="${h-15-maxH-2}" font-size="9" fill="#d97706">■ B类(70-90%)</text>
-    <text x="${startX+180}" y="${h-15-maxH-2}" font-size="9" fill="#059669">■ C类(>90%)</text>
-  `;
-}
-
-// 初始化
-renderOverview();
+document.getElementById("apply").addEventListener("click",render);
+["f-cat","f-wh","f-st"].forEach(id=>document.getElementById(id).addEventListener("change",render));
+document.getElementById("reset").addEventListener("click",()=>{
+  ["f-cat","f-wh","f-st"].forEach(id=>document.getElementById(id).value="");render();
+});
+document.getElementById("csv").addEventListener("click",()=>{
+  const list=getList();
+  const H=["SKU","名称","品类","仓库","日均销量","库存","在途","覆盖天数","周转天数","状态","供应商","准时率"];
+  const lines=[H.join(",")].concat(list.map(s=>[s.sku,s.name,s.cat,s.wh,s.daily,s.stock,s.intransit,
+    s.cover,s.turn,s.st,s.supplier,s.ontime].join(",")));
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob(["\ufeff"+lines.join("\n")],{type:"text/csv"}));
+  a.download="供应链运营SKU分析.csv";a.click();
+});
+render();
 </script>
 </body>
 </html>

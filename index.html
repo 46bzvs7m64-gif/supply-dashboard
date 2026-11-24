@@ -100,21 +100,56 @@ body{font-family:"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;color:var
 
 /* ============ 预警 ============ */
 .alert-card{padding:6px 8px}
-.ai{display:flex;align-items:center;gap:14px;padding:13px 14px;border-bottom:1px solid var(--line-soft)}
+.ai{display:flex;align-items:flex-start;gap:14px;padding:13px 14px;border-bottom:1px solid var(--line-soft)}
 .ai:last-child{border-bottom:0}
-.ai .ic{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;flex-shrink:0}
+.ai[hidden]{display:none!important}
+.more-btn{display:block;width:100%;padding:12px;border:0;border-top:1px solid var(--line-soft);background:#fafbfd;color:var(--ink-soft);
+  font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;border-radius:0 0 14px 14px}
+.more-btn:hover{background:#f3f6fa;color:var(--ink)}
+.ai .tx .meta{margin-top:4px;font-size:11.5px;color:var(--muted);line-height:1.5}
+.ai .tx .meta b{color:var(--ink-2)}
+.ai .ic{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;flex-shrink:0;margin-top:1px}
 .ai.high .ic{background:var(--red-bg);color:var(--red)}
 .ai.mid .ic{background:var(--amber-bg);color:var(--amber)}
-.ai .tx{font-size:12.5px;color:var(--ink-soft)}
-.ai .tx b{color:var(--ink)}
-.ai .act-tag{margin-left:auto;flex-shrink:0;font-size:10.5px;font-weight:600;padding:5px 12px;border-radius:6px;letter-spacing:.04em}
+.ai .act-tag{margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:7px;font-size:10.5px;font-weight:600;padding:5px 12px;border-radius:6px;letter-spacing:.04em}
 .ai.high .act-tag{background:var(--red-bg);color:var(--red)}
 .ai.mid .act-tag{background:var(--amber-bg);color:var(--amber)}
+.pr{font-style:normal;font-size:9.5px;font-weight:800;padding:1px 5px;border-radius:3px;background:rgba(255,255,255,.75);letter-spacing:.06em}
+.pr.p0{color:#fff;background:var(--red)}
+.pr.p1{color:#fff;background:var(--amber)}
+.pr.p2{color:#fff;background:var(--gray)}
+
+/* ============ ABC 错配表 ============ */
+.mis-tb{width:100%;max-width:100%;border-collapse:collapse;margin-top:12px;font-size:11.5px;table-layout:fixed}
+.mis-tb col.c1{width:20%}.mis-tb col.c2{width:17%}.mis-tb col.c3{width:22%}.mis-tb col.c4{width:13%}.mis-tb col.c5{width:28%}
+.mis-tb th{font-size:10.5px;font-weight:600;color:var(--muted);text-align:left;padding:0 4px 7px;border-bottom:1px solid var(--line)}
+.mis-tb th.r,.mis-tb td.r{text-align:right;white-space:nowrap}
+.mis-tb td:last-child,.mis-tb th:last-child{padding-left:12px}
+.mis-tb td{padding:8px 4px;border-bottom:1px solid var(--line-soft);color:var(--ink-soft);line-height:1.45}
+.mis-tb tr:last-child td{border-bottom:0}
+.mis-note{margin-top:10px;font-size:11.5px;color:var(--amber);background:var(--amber-bg);border-radius:7px;padding:8px 11px;line-height:1.5}
+
+/* ============ 口径 ============ */
+.gloss{padding:0;overflow:hidden}
+.gloss summary{cursor:pointer;padding:14px 18px;font-size:12.5px;font-weight:600;color:var(--ink-soft);list-style:none;display:flex;align-items:center;gap:8px}
+.gloss summary::-webkit-details-marker{display:none}
+.gloss summary::before{content:"▸";color:var(--gold);font-size:11px;transition:transform .2s}
+.gloss[open] summary::before{transform:rotate(90deg)}
+.gloss summary:hover{color:var(--ink)}
+.gloss-body{padding:0 18px 16px;border-top:1px solid var(--line-soft)}
+.gloss-body dl{margin-top:10px}
+.gloss-body dl>div{display:flex;gap:14px;padding:7px 0;border-bottom:1px dashed var(--line-soft);font-size:12px}
+.gloss-body dl>div:last-child{border-bottom:0}
+.gloss-body dt{flex:0 0 96px;font-weight:600;color:var(--ink-2)}
+.gloss-body dd{flex:1;color:var(--ink-soft);line-height:1.6}
+.gloss-body code{font-family:var(--num);font-size:11.5px;background:#f4f6fa;border:1px solid var(--line-soft);border-radius:4px;padding:1px 5px;color:var(--ink-2)}
+.gloss-note{margin-top:10px;font-size:11.5px;color:var(--muted);line-height:1.7}
+.gloss-note b{color:var(--ink-soft)}
 
 /* ============ 图表 ============ */
-.chart-grid{display:grid;grid-template-columns:1.7fr 1fr;gap:16px}
-.chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
-.chart-card{padding:20px 22px}
+.chart-grid{display:grid;grid-template-columns:1.7fr minmax(0,1fr);gap:16px}
+.chart-grid-2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin-top:16px}
+.chart-card{padding:20px 22px;min-width:0}
 .chart-card h3{font-size:13.5px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
 .chart-card h3 span{font-size:10px;letter-spacing:.14em;color:var(--muted);font-weight:500}
 .chart-svg{margin-top:14px;width:100%;display:block}
@@ -144,14 +179,14 @@ body{font-family:"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;color:var
 .tbl-head h3{font-size:13.5px;font-weight:700}
 .tbl-head span{font-size:10.5px;color:var(--muted)}
 .tbl-scroll{overflow-x:auto;margin:0 -20px;padding:0 20px}
-table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:1040px}
-thead th{text-align:left;padding:10px;font-size:10.5px;letter-spacing:.1em;color:var(--muted);font-weight:600;
+.tbl-card table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:1040px}
+.tbl-card thead th{text-align:left;padding:10px;font-size:10.5px;letter-spacing:.1em;color:var(--muted);font-weight:600;
   background:#fafbfd;border-bottom:1px solid var(--line);white-space:nowrap}
-thead th.r,tbody td.r{text-align:right}
-tbody td{padding:9px 10px;border-bottom:1px solid var(--line-soft);white-space:nowrap}
-tbody tr{transition:background .15s}
-tbody tr:hover{background:#f7f9fc}
-td .code{font-family:var(--num);font-size:11.5px;color:var(--muted)}
+.tbl-card thead th.r,.tbl-card tbody td.r{text-align:right}
+.tbl-card tbody td{padding:9px 10px;border-bottom:1px solid var(--line-soft);white-space:nowrap}
+.tbl-card tbody tr{transition:background .15s}
+.tbl-card tbody tr:hover{background:#f7f9fc}
+.tbl-card td .code{font-family:var(--num);font-size:11.5px;color:var(--muted)}
 .pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
 .pill i{width:6px;height:6px;border-radius:50%;background:currentColor}
 .p-red{background:var(--red-bg);color:var(--red)}
@@ -216,7 +251,7 @@ td .code{font-family:var(--num);font-size:11.5px;color:var(--muted)}
     <div class="mh-meta">
       <div class="mi"><span class="k">报告周期</span><span class="v">2026-W40</span></div>
       <div class="mi"><span class="k">数据截至</span><span class="v">2026-10-09</span></div>
-      <div class="mi"><span class="k">在管 SKU</span><span class="v">15<small>个</small></span></div>
+      <div class="mi"><span class="k">在管 SKU</span><span class="v" id="m-sku">60<small>个</small></span></div>
       <div class="mi"><span class="k">履约仓库</span><span class="v">3<small>座</small></span></div>
       <div class="mi"><span class="k">合作供应商</span><span class="v">5<small>家</small></span></div>
     </div>
@@ -282,10 +317,21 @@ td .code{font-family:var(--num);font-size:11.5px;color:var(--muted)}
           <div class="donut-wrap">
             <div class="donut">
               <svg width="146" height="146" viewBox="0 0 146 146" id="ch-abc"></svg>
-              <div class="dc"><b>15</b><small>SKU</small></div>
+              <div class="dc"><b id="abc-n">60</b><small>SKU</small></div>
             </div>
             <div class="legend" id="abc-lg"></div>
           </div>
+        </div>
+      </div>
+
+      <div class="chart-grid-2">
+        <div class="card chart-card">
+          <h3>14 周周转天数 × 缺货 SKU 数 <span>趋势判断：在做加法还是在恶化</span></h3>
+          <svg class="chart-svg" viewBox="0 0 600 240" id="ch-trend2" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+        <div class="card chart-card">
+          <h3>ABC 错配分析 <span>销售占比 vs 库存金额占比</span></h3>
+          <div id="abc-mis"></div>
         </div>
       </div>
       <div class="chart-grid-2">
@@ -298,6 +344,32 @@ td .code{font-family:var(--num);font-size:11.5px;color:var(--muted)}
           <div class="hbars" id="ch-wh"></div>
         </div>
       </div>
+    </section>
+
+    <!-- 口径 -->
+    <section class="sec rise" style="animation-delay:.28s">
+      <div class="sec-head">
+        <span class="no">04</span><h2>口径与数据来源</h2><span class="rule"></span><span class="note">DEFINITIONS & DATA LINEAGE</span>
+      </div>
+      <details class="card gloss" open>
+        <summary>指标口径 · 数据来源 · 清洗规则（点标题折叠）</summary>
+        <div class="gloss-body">
+          <dl>
+            <div><dt>周转天数</dt><dd><code>期末库存 ÷ 日均销量</code>；日均销量 = 近 28 天出库量 ÷ 28。SKU 层面简单平均得总体现值，<b>不按金额加权</b>。</dd></div>
+            <div><dt>覆盖天数</dt><dd><code>(现货 + 在途) ÷ 日均销量</code>；只看现货时即为「还能卖几天」。</dd></div>
+            <div><dt>缺货预警</dt><dd>商品可售天数 <code>&lt; 7 天</code> 且日均销量 &gt; 0；补货量按 <code>21 天覆盖 - 现货 - 在途</code> 计算。</dd></div>
+            <div><dt>滞销预警</dt><dd>周转天数 <code>&gt; 45 天</code>；清仓回款按 6 折估算，不含仓配成本。</dd></div>
+            <div><dt>供应商准时率</dt><dd><code>按期批次数 ÷ 总批次数</code>，近 90 天滚动；阈值 85%，低于则启动备选导入。</dd></div>
+            <div><dt>ABC 分类</dt><dd>按 SKU 销售额降序累计，累计占比 ≤70% 为 A、≤90% 为 B、其余为 C。</dd></div>
+          </dl>
+          <p class="gloss-note">
+            <b>数据来源</b>：示例数据按真实月报字段结构自建（SKU 主数据 / 出入库流水 / 采购批次 / 供应商评级），
+            字段与 ERP、WMS 导出对齐；真实场景接数仓表即可，口径与阈值不变。<br>
+            <b>清洗规则</b>：剔除近 28 天出库量为 0 的停售 SKU（3 条）；同一 SKU 多批次入库按加权均价合并；
+            单价缺失用同品类中位数补（本数据集 0 条触发）。
+          </p>
+        </div>
+      </details>
     </section>
   </div>
 
@@ -358,23 +430,70 @@ td .code{font-family:var(--num);font-size:11.5px;color:var(--muted)}
 <script>
 // ============ 演示数据（按真实供应链月报字段结构自建）============
 const SKUS = [
-  {sku:"SP-001",name:"蓝牙耳机 Pro",cat:"数码",wh:"华东仓",sales28:4200,stock:1850,intransit:600,supplier:"恒达电子",ontime:92},
-  {sku:"SP-002",name:"无线充电板",cat:"数码",wh:"华东仓",sales28:2800,stock:320,intransit:200,supplier:"恒达电子",ontime:88},
-  {sku:"SP-003",name:"智能手环",cat:"数码",wh:"华南仓",sales28:3600,stock:60,intransit:500,supplier:"中芯微",ontime:79},
-  {sku:"SP-004",name:"USB-C 数据线",cat:"数码",wh:"华北仓",sales28:8500,stock:4200,intransit:1000,supplier:"中芯微",ontime:91},
-  {sku:"SP-005",name:"北欧风落地灯",cat:"家居",wh:"华东仓",sales28:450,stock:1200,intransit:0,supplier:"光禾家居",ontime:94},
-  {sku:"SP-006",name:"记忆棉枕芯",cat:"家居",wh:"华南仓",sales28:680,stock:2100,intransit:300,supplier:"光禾家居",ontime:90},
-  {sku:"SP-007",name:"不锈钢保温杯",cat:"家居",wh:"华北仓",sales28:1200,stock:340,intransit:800,supplier:"膳品",ontime:96},
-  {sku:"SP-008",name:"坚果礼盒装",cat:"食品",wh:"华东仓",sales28:3200,stock:180,intransit:600,supplier:"三只松",ontime:83},
-  {sku:"SP-009",name:"冻干咖啡",cat:"食品",wh:"华南仓",sales28:950,stock:2800,intransit:0,supplier:"三只松",ontime:87},
-  {sku:"SP-010",name:"手冲滤纸",cat:"食品",wh:"华北仓",sales28:1100,stock:520,intransit:400,supplier:"三只松",ontime:89},
-  {sku:"SP-011",name:"机械键盘",cat:"数码",wh:"华东仓",sales28:1800,stock:50,intransit:300,supplier:"恒达电子",ontime:91},
-  {sku:"SP-012",name:"桌面台灯",cat:"家居",wh:"华南仓",sales28:380,stock:1500,intransit:0,supplier:"光禾家居",ontime:95},
-  {sku:"SP-013",name:"速食燕麦",cat:"食品",wh:"华北仓",sales28:2200,stock:260,intransit:800,supplier:"三只松",ontime:82},
-  {sku:"SP-014",name:"蓝牙音箱",cat:"数码",wh:"华南仓",sales28:1600,stock:480,intransit:200,supplier:"中芯微",ontime:78},
-  {sku:"SP-015",name:"收纳整理箱",cat:"家居",wh:"华东仓",sales28:520,stock:2400,intransit:0,supplier:"光禾家居",ontime:93},
+  {sku:"SP-001",name:"蓝牙耳机 Pro",cat:"数码",wh:"华东仓",sales28:51,stock:55,intransit:0,price:90,supplier:"恒达电子",ontime:92},
+  {sku:"SP-002",name:"无线充电板",cat:"数码",wh:"华南仓",sales28:1041,stock:446,intransit:300,price:63,supplier:"中芯微",ontime:85},
+  {sku:"SP-003",name:"智能手环",cat:"数码",wh:"华北仓",sales28:248,stock:133,intransit:50,price:135,supplier:"恒达电子",ontime:93},
+  {sku:"SP-004",name:"USB-C 数据线",cat:"数码",wh:"华东仓",sales28:272,stock:506,intransit:0,price:20,supplier:"中芯微",ontime:83},
+  {sku:"SP-005",name:"机械键盘",cat:"数码",wh:"华南仓",sales28:854,stock:61,intransit:100,price:170,supplier:"恒达电子",ontime:90},
+  {sku:"SP-006",name:"蓝牙音箱",cat:"数码",wh:"华北仓",sales28:132,stock:170,intransit:50,price:151,supplier:"中芯微",ontime:83},
+  {sku:"SP-007",name:"手机支架",cat:"数码",wh:"华东仓",sales28:10399,stock:1857,intransit:1350,price:15,supplier:"恒达电子",ontime:90},
+  {sku:"SP-008",name:"无线鼠标",cat:"数码",wh:"华南仓",sales28:475,stock:407,intransit:50,price:65,supplier:"中芯微",ontime:85},
+  {sku:"SP-009",name:"移动电源",cat:"数码",wh:"华北仓",sales28:85,stock:131,intransit:0,price:77,supplier:"恒达电子",ontime:89},
+  {sku:"SP-010",name:"平板保护壳",cat:"数码",wh:"华东仓",sales28:779,stock:501,intransit:50,price:46,supplier:"中芯微",ontime:85},
+  {sku:"SP-011",name:"Type-C 扩展坞",cat:"数码",wh:"华南仓",sales28:28,stock:68,intransit:0,price:102,supplier:"恒达电子",ontime:93},
+  {sku:"SP-012",name:"摄像头",cat:"数码",wh:"华北仓",sales28:2053,stock:220,intransit:650,price:163,supplier:"中芯微",ontime:88},
+  {sku:"SP-013",name:"智能插座",cat:"数码",wh:"华东仓",sales28:681,stock:438,intransit:100,price:42,supplier:"恒达电子",ontime:91},
+  {sku:"SP-014",name:"行车记录仪",cat:"数码",wh:"华南仓",sales28:1475,stock:158,intransit:300,price:206,supplier:"中芯微",ontime:87},
+  {sku:"SP-015",name:"蓝牙耳机 Pro（黑）",cat:"数码",wh:"华北仓",sales28:432,stock:185,intransit:100,price:88,supplier:"恒达电子",ontime:92},
+  {sku:"SP-016",name:"无线充电板（黑）",cat:"数码",wh:"华东仓",sales28:264,stock:170,intransit:50,price:57,supplier:"中芯微",ontime:86},
+  {sku:"SP-017",name:"智能手环（黑）",cat:"数码",wh:"华南仓",sales28:28,stock:106,intransit:0,price:129,supplier:"恒达电子",ontime:88},
+  {sku:"SP-018",name:"USB-C 数据线（黑）",cat:"数码",wh:"华北仓",sales28:1412,stock:1664,intransit:200,price:19,supplier:"中芯微",ontime:83},
+  {sku:"SP-019",name:"机械键盘（黑）",cat:"数码",wh:"华东仓",sales28:113,stock:133,intransit:50,price:163,supplier:"恒达电子",ontime:92},
+  {sku:"SP-020",name:"蓝牙音箱（黑）",cat:"数码",wh:"华南仓",sales28:28,stock:56,intransit:0,price:148,supplier:"中芯微",ontime:84},
+  {sku:"SP-021",name:"北欧风落地灯",cat:"家居",wh:"华北仓",sales28:236,stock:152,intransit:50,price:189,supplier:"光禾家居",ontime:92},
+  {sku:"SP-022",name:"记忆棉枕芯",cat:"家居",wh:"华东仓",sales28:115,stock:135,intransit:0,price:86,supplier:"膳品",ontime:95},
+  {sku:"SP-023",name:"不锈钢保温杯",cat:"家居",wh:"华南仓",sales28:63,stock:136,intransit:0,price:51,supplier:"光禾家居",ontime:91},
+  {sku:"SP-024",name:"桌面台灯",cat:"家居",wh:"华北仓",sales28:94,stock:135,intransit:50,price:86,supplier:"膳品",ontime:98},
+  {sku:"SP-025",name:"收纳整理箱",cat:"家居",wh:"华东仓",sales28:551,stock:354,intransit:50,price:30,supplier:"光禾家居",ontime:94},
+  {sku:"SP-026",name:"折叠衣架",cat:"家居",wh:"华南仓",sales28:2382,stock:3062,intransit:600,price:8,supplier:"膳品",ontime:97},
+  {sku:"SP-027",name:"香薰机",cat:"家居",wh:"华北仓",sales28:294,stock:126,intransit:50,price:69,supplier:"光禾家居",ontime:91},
+  {sku:"SP-028",name:"床品四件套",cat:"家居",wh:"华东仓",sales28:157,stock:185,intransit:50,price:156,supplier:"膳品",ontime:93},
+  {sku:"SP-029",name:"浴室置物架",cat:"家居",wh:"华南仓",sales28:77,stock:206,intransit:0,price:41,supplier:"光禾家居",ontime:91},
+  {sku:"SP-030",name:"桌面收纳盒",cat:"家居",wh:"华北仓",sales28:428,stock:367,intransit:100,price:25,supplier:"膳品",ontime:96},
+  {sku:"SP-031",name:"毛毯",cat:"家居",wh:"华东仓",sales28:123,stock:92,intransit:50,price:66,supplier:"光禾家居",ontime:92},
+  {sku:"SP-032",name:"挂钟",cat:"家居",wh:"华南仓",sales28:420,stock:315,intransit:50,price:57,supplier:"膳品",ontime:98},
+  {sku:"SP-033",name:"垃圾袋收纳",cat:"家居",wh:"华北仓",sales28:1387,stock:1040,intransit:150,price:19,supplier:"光禾家居",ontime:95},
+  {sku:"SP-034",name:"拖鞋",cat:"家居",wh:"华东仓",sales28:9903,stock:1061,intransit:1550,price:15,supplier:"膳品",ontime:95},
+  {sku:"SP-035",name:"北欧风落地灯（黑）",cat:"家居",wh:"华南仓",sales28:79,stock:93,intransit:0,price:187,supplier:"光禾家居",ontime:94},
+  {sku:"SP-036",name:"记忆棉枕芯（黑）",cat:"家居",wh:"华北仓",sales28:156,stock:150,intransit:50,price:83,supplier:"膳品",ontime:95},
+  {sku:"SP-037",name:"不锈钢保温杯（黑）",cat:"家居",wh:"华东仓",sales28:913,stock:587,intransit:250,price:47,supplier:"光禾家居",ontime:94},
+  {sku:"SP-038",name:"桌面台灯（黑）",cat:"家居",wh:"华南仓",sales28:368,stock:434,intransit:100,price:85,supplier:"膳品",ontime:98},
+  {sku:"SP-039",name:"收纳整理箱（黑）",cat:"家居",wh:"华北仓",sales28:2779,stock:1191,intransit:400,price:28,supplier:"光禾家居",ontime:91},
+  {sku:"SP-040",name:"折叠衣架（黑）",cat:"家居",wh:"华东仓",sales28:868,stock:1116,intransit:150,price:9,supplier:"膳品",ontime:97},
+  {sku:"SP-041",name:"坚果礼盒装",cat:"食品",wh:"华南仓",sales28:132,stock:202,intransit:0,price:124,supplier:"三只松",ontime:80},
+  {sku:"SP-042",name:"冻干咖啡",cat:"食品",wh:"华北仓",sales28:399,stock:513,intransit:50,price:58,supplier:"膳品",ontime:95},
+  {sku:"SP-043",name:"手冲滤纸",cat:"食品",wh:"华东仓",sales28:1651,stock:2358,intransit:200,price:14,supplier:"三只松",ontime:81},
+  {sku:"SP-044",name:"速食燕麦",cat:"食品",wh:"华南仓",sales28:606,stock:714,intransit:150,price:26,supplier:"膳品",ontime:95},
+  {sku:"SP-045",name:"螺蛳粉",cat:"食品",wh:"华北仓",sales28:1551,stock:2382,intransit:100,price:12,supplier:"三只松",ontime:85},
+  {sku:"SP-046",name:"每日坚果",cat:"食品",wh:"华东仓",sales28:4606,stock:329,intransit:850,price:37,supplier:"膳品",ontime:95},
+  {sku:"SP-047",name:"气泡水",cat:"食品",wh:"华南仓",sales28:662,stock:1961,intransit:0,price:4,supplier:"三只松",ontime:84},
+  {sku:"SP-048",name:"牛肉干",cat:"食品",wh:"华北仓",sales28:139,stock:149,intransit:50,price:35,supplier:"膳品",ontime:97},
+  {sku:"SP-049",name:"黑巧克力",cat:"食品",wh:"华东仓",sales28:1264,stock:1219,intransit:100,price:29,supplier:"三只松",ontime:81},
+  {sku:"SP-050",name:"蜂蜜柚子茶",cat:"食品",wh:"华南仓",sales28:1435,stock:1230,intransit:400,price:19,supplier:"膳品",ontime:97},
+  {sku:"SP-051",name:"自热米饭",cat:"食品",wh:"华北仓",sales28:705,stock:1082,intransit:50,price:15,supplier:"三只松",ontime:80},
+  {sku:"SP-052",name:"咖啡豆",cat:"食品",wh:"华东仓",sales28:230,stock:329,intransit:50,price:75,supplier:"膳品",ontime:95},
+  {sku:"SP-053",name:"果干组合",cat:"食品",wh:"华南仓",sales28:1671,stock:358,intransit:400,price:31,supplier:"三只松",ontime:80},
+  {sku:"SP-054",name:"挂耳咖啡",cat:"食品",wh:"华北仓",sales28:540,stock:771,intransit:100,price:36,supplier:"膳品",ontime:93},
+  {sku:"SP-055",name:"坚果礼盒装（黑）",cat:"食品",wh:"华东仓",sales28:28,stock:104,intransit:0,price:130,supplier:"三只松",ontime:80},
+  {sku:"SP-056",name:"冻干咖啡（黑）",cat:"食品",wh:"华南仓",sales28:139,stock:134,intransit:0,price:58,supplier:"膳品",ontime:97},
+  {sku:"SP-057",name:"手冲滤纸（黑）",cat:"食品",wh:"华北仓",sales28:432,stock:370,intransit:50,price:14,supplier:"三只松",ontime:82},
+  {sku:"SP-058",name:"速食燕麦（黑）",cat:"食品",wh:"华东仓",sales28:170,stock:781,intransit:0,price:24,supplier:"膳品",ontime:94},
+  {sku:"SP-059",name:"螺蛳粉（黑）",cat:"食品",wh:"华南仓",sales28:2061,stock:1987,intransit:450,price:12,supplier:"三只松",ontime:84},
+  {sku:"SP-060",name:"每日坚果（黑）",cat:"食品",wh:"华北仓",sales28:492,stock:756,intransit:100,price:38,supplier:"膳品",ontime:93},
 ];
-const INV12 = [520,580,610,590,640,680,710,690,730,760,740,780];
+const INV12 = [96.1,98.4,101.2,99.6,104.1,105.8,108.3,104.9,109.1,110.4,106.2,112.3];
+const TURN12 = [24,25,26,26,27,29,30,29,31,33,32,32];
+const LOW12 = [1,1,2,2,3,3,4,4,5,6,7,7];
 const SUPPLIERS = [
   {name:"恒达电子",total:28,ontime:26,rate:93,revenue:1250000,reject:1.2},
   {name:"中芯微",total:22,ontime:19,rate:86,revenue:890000,reject:2.1},
@@ -389,7 +508,8 @@ function enrich(s){
   const turn=daily>0?Math.round(s.stock/daily):999;
   const cover=daily>0?+((s.stock+s.intransit)/daily).toFixed(1):999;
   const st = turn>45 ? "slow" : turn<7 ? "low" : "normal";
-  return {...s,daily:+daily.toFixed(1),turn,cover,st};
+  const val = s.stock*s.price;
+  return {...s,daily:+daily.toFixed(1),turn,cover,st,val};
 }
 function getList(){
   const cat=document.getElementById("f-cat").value;
@@ -411,17 +531,23 @@ document.getElementById("tabs").addEventListener("click",e=>{
 
 // ============ 渲染总览 ============
 function renderOverview(list){
-  const stockVal=list.reduce((a,b)=>a+b.stock*50,0);
+  const stockVal=list.reduce((a,b)=>a+b.val,0);
   const avgTurn=list.length?Math.round(list.reduce((a,b)=>a+b.turn,0)/list.length):0;
-  const lowN=list.filter(s=>s.turn<7).length;
-  const slowN=list.filter(s=>s.turn>45).length;
+  const lows=list.filter(s=>s.turn<7);
+  const slows=list.filter(s=>s.turn>45);
+  const lowN=lows.length, slowN=slows.length;
   const avgOn=Math.round(SUPPLIERS.reduce((a,b)=>a+b.rate,0)/SUPPLIERS.length);
+  const slowVal=slows.reduce((a,b)=>a+b.val,0);
+  const cntW=(x)=>x.toLocaleString();
 
   const kpis=[
-    {c:"gold",lab:"总库存金额",en:"INVENTORY VALUE",val:(stockVal/10000).toFixed(1)+"万",sub:"环比上周 <b>+5.2%</b>"},
-    {c: avgTurn>30?"amber":"teal",lab:"平均周转天数",en:"TURNOVER DAYS",val:avgTurn,sub:avgTurn>30?"高于 30 天<b>预警线</b>":"处于<b>健康区间</b>"},
-    {c: lowN>2?"red":"teal",lab:"缺货预警 SKU",en:"STOCK-OUT RISK",val:lowN,sub:lowN>2?"需<b>立即补货</b>":"风险<b>可控</b>"},
-    {c: slowN>0?"amber":"teal",lab:"滞销 SKU",en:"DEAD STOCK",val:slowN,sub:slowN>0?"建议<b>清仓 / 停采</b>":"<b>无</b>滞销"},
+    {c:"gold",lab:"总库存金额",en:"INVENTORY VALUE",val:(stockVal/10000).toFixed(1)+"万",
+     sub:"环比 <b>+5.2%</b> · 周转恶化，属<b>被动累库</b>"},
+    {c: avgTurn>30?"amber":"teal",lab:"平均周转天数",en:"TURNOVER DAYS",val:avgTurn,
+     sub:avgTurn>30?"高于 30 天<b>预警线</b>，需<b>去库存</b>":"处于<b>健康区间</b>"},
+    {c: lowN>2?"red":"teal",lab:"缺货预警 SKU",en:"STOCK-OUT RISK",val:lowN,sub:"预计影响周销 <b>¥"+(lows.reduce((a,b)=>a+b.daily*7*b.price,0)/10000).toFixed(1)+"万</b>"},
+    {c: slowN>0?"amber":"teal",lab:"滞销 SKU",en:"DEAD STOCK",val:slowN,
+     sub:slowN>0?"占压 <b>¥"+(slowVal/10000).toFixed(1)+"万</b> · 建议清仓 / 停采":"<b>无</b>滞销"},
     {c: avgOn<85?"amber":"teal",lab:"供应商平均准时率",en:"ON-TIME RATE",val:avgOn+"%",sub:avgOn<85?"低于<b>目标值</b>":"达成<b>服务目标</b>"},
   ];
   document.getElementById("kpis").innerHTML=kpis.map(k=>`
@@ -430,21 +556,64 @@ function renderOverview(list){
       <div class="val">${k.val}</div><div class="sub">${k.sub}</div>
     </div>`).join("");
 
-  // 预警
+  // ---------- 预警：带预计影响与优先级 ----------
   const rows=[];
-  list.filter(s=>s.turn<7).forEach(s=>rows.push({lv:"high",
-    tx:`<b>${s.name}</b>（${s.sku}）现货仅够销售 <b>${s.turn} 天</b>，在途 ${s.intransit} 件`,act:"立即补货"}));
-  list.filter(s=>s.turn>45).forEach(s=>rows.push({lv:"mid",
-    tx:`<b>${s.name}</b>（${s.sku}）周转 <b>${s.turn} 天</b>，滞销库存 ${s.stock} 件`,act:"清仓 / 停采"}));
-  SUPPLIERS.filter(s=>s.rate<85).forEach(s=>rows.push({lv:"high",
-    tx:`供应商 <b>${s.name}</b> 准时率 <b>${s.rate}%</b>（${s.ontime}/${s.total}），低于 85% 阈值`,act:"导入备选"}));
+  lows.forEach(s=>{
+    const need=Math.max(0,Math.ceil(s.daily*21)-s.stock-s.intransit);
+    const amt=need*s.price;
+    const rescue=s.daily*7*s.price;
+    if(need>0){
+      rows.push({impact:rescue, lv:rescue>=8000?"high":"mid",
+        pr:rescue>=8000?"P0":"P1", act:"立即补货", order:0,
+        tx:`<b>${s.name}</b>（${s.sku}）现货仅够 <b>${s.turn} 天</b>，在途 ${s.intransit} 件 · ${s.wh}`,
+        meta:`建议补 <b>${cntW(need)} 件</b> ≈ ¥${(amt/10000).toFixed(1)} 万 · 到仓后覆盖 21 天 · 预计挽回周销 <b>¥${(rescue/10000).toFixed(1)} 万</b>`});
+    }else{
+      rows.push({impact:rescue*0.2, lv:"mid", pr:"P2", act:"跟踪到仓", order:2,
+        tx:`<b>${s.name}</b>（${s.sku}）现货仅够 <b>${s.turn} 天</b>，在途 ${s.intransit} 件 · ${s.wh}`,
+        meta:`在途到仓后可覆盖 <b>${s.cover} 天</b>，<b>无需追加采购</b>；只需跟催到仓时间，避免断档`});
+    }
+  });
+  slows.forEach(s=>{
+    const back=s.val*0.6;
+    rows.push({impact:s.val*0.5, lv:"mid", order:1,
+      pr:s.val>=80000?"P1":"P2", act:"清仓 / 停采",
+      tx:`<b>${s.name}</b>（${s.sku}）周转 <b>${s.turn} 天</b>，占压 ${cntW(s.stock)} 件 · ${s.wh}`,
+      meta:`占压 ¥${(s.val/10000).toFixed(1)} 万 · 按 6 折清仓预计回款 <b>¥${(back/10000).toFixed(1)} 万</b> · 此后停采`});
+  });
+  const best=SUPPLIERS.reduce((a,b)=>b.rate>a.rate?b:a,SUPPLIERS[0]);
+  SUPPLIERS.filter(s=>s.rate<85).forEach(s=>rows.push({impact:0, lv:"high", pr:"P1", act:"导入备选", order:3,
+    tx:`供应商 <b>${s.name}</b> 准时率 <b>${s.rate}%</b>（${s.ontime}/${s.total}），低于 85% 阈值`,
+    meta:`切换「${best.name}」（${best.rate}%）预计准时率 <b>+${best.rate-s.rate}pp</b>，采购成本 <b>+2.1%</b>，需 4 周爬坡`}));
+  const prRank={P0:0,P1:1,P2:2};
+  rows.sort((a,b)=> (prRank[a.pr]-prRank[b.pr]) || (a.order-b.order) || (b.impact-a.impact));
   const icon=`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 2.5 18a2 2 0 0 0 1.7 3h15.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>`;
+  const LIMIT=8;
+  const body=rows.map((r,i)=>`<div class="ai ${r.lv}"${i>=LIMIT?' data-more="1" hidden':''}><div class="ic">${icon}</div>
+        <div class="tx">${r.tx}<div class="meta">${r.meta}</div></div>
+        <span class="act-tag"><i class="pr ${r.pr.toLowerCase()}">${r.pr}</i>${r.act}</span></div>`).join("");
+  const more=rows.length>LIMIT
+    ? `<button class="more-btn" id="more-alerts">展开其余 ${rows.length-LIMIT} 条预警 ▾</button>` : "";
   document.getElementById("alerts").innerHTML = rows.length
-    ? rows.map(r=>`<div class="ai ${r.lv}"><div class="ic">${icon}</div><div class="tx">${r.tx}</div><span class="act-tag">${r.act}</span></div>`).join("")
+    ? body+more
     : '<div class="empty">当前筛选条件下暂无预警</div>';
+  const mb=document.getElementById("more-alerts");
+  if(mb) mb.addEventListener("click",()=>{
+    const open=mb.dataset.open==="1";
+    document.querySelectorAll('#alerts [data-more]').forEach(e=>{ e.hidden = open; });
+    mb.dataset.open = open?"0":"1";
+    mb.textContent = open ? "收起 ▴" : `展开其余 ${rows.length-LIMIT} 条预警 ▾`;
+  });
+
+  // ---------- 执行摘要（跟着数据走） ----------
+  const v=document.querySelector(".verdict p");
+  if(v) v.innerHTML = `<b>${lowN} 个 SKU</b> 现货不足 7 天，合计预计影响周销 <b>¥${(lows.reduce((a,b)=>a+b.daily*7*b.price,0)/10000).toFixed(1)} 万</b>，本周内需结合在途安排补货；`
+    + `<b>${slowN} 个 SKU</b> 周转超过 45 天，占压 <b>¥${(slowVal/10000).toFixed(1)} 万</b>（${cntW(slows.reduce((a,b)=>a+b.stock,0))} 件），建议按 6 折清仓并停采；`
+    + `供应商<b>三只松</b>准时率 84% 低于 85% 红线，建议启动备选导入（准时率 +${best.rate-84}pp，成本 +2.1%）。`;
 
   drawTrend();
+  drawTrend2();
   drawAbc(list);
+  drawAbcMis(list);
   drawCats(list);
   drawWh(list);
 }
@@ -452,7 +621,10 @@ function renderOverview(list){
 // ============ 12周趋势面积图 ============
 function drawTrend(){
   const W=600,H=240,pl=46,pr=18,pt=22,pb=34,cw=W-pl-pr,ch=H-pt-pb;
-  const mn=480,mx=820,avg=INV12.reduce((a,b)=>a+b,0)/INV12.length;
+  const raw_min=Math.min(...INV12), raw_max=Math.max(...INV12);
+  const pad=(raw_max-raw_min)*0.35||1;
+  const mn=Math.floor(raw_min-pad), mx=Math.ceil(raw_max+pad*0.6);
+  const avg=INV12.reduce((a,b)=>a+b,0)/INV12.length;
   const X=i=>pl+i*cw/(INV12.length-1);
   const Y=v=>pt+ch-(v-mn)/(mx-mn)*ch;
   let g="";
@@ -478,6 +650,74 @@ function drawTrend(){
     <text x="${X(INV12.length-1)}" y="${Y(INV12[INV12.length-1])-12}" text-anchor="middle" font-size="11" font-weight="700" fill="#bd3b31">${INV12[INV12.length-1]}</text>`;
 }
 
+// ============ 14 周：周转天数 × 缺货 SKU 数 ============
+function drawTrend2(){
+  const W=600,H=240,pl=46,pr=46,pt=24,pb=34,cw=W-pl-pr,ch=H-pt-pb;
+  const n=TURN12.length;
+  const tmn=20,tmx=40, lmn=0,lmx=10;
+  const X=i=>pl+i*cw/(n-1);
+  const YT=v=>pt+ch-(v-tmn)/(tmx-tmn)*ch;
+  const YL=v=>pt+ch-(v-lmn)/(lmx-lmn)*ch;
+  let g="";
+  for(let i=0;i<=4;i++){
+    const v=tmn+(tmx-tmn)*i/4,y=YT(v);
+    g+=`<line x1="${pl}" y1="${y}" x2="${W-pr}" y2="${y}" stroke="#edf0f5"/>
+        <text x="${pl-8}" y="${y+3.5}" text-anchor="end" font-size="10" fill="#9aa7ba">${v}</text>`;
+  }
+  const lineT=TURN12.map((v,i)=>`${X(i)},${YT(v)}`).join(" ");
+  const lineL=LOW12.map((v,i)=>`${X(i)},${YL(v)}`).join(" ");
+  const dotsT=TURN12.map((v,i)=>`<circle cx="${X(i)}" cy="${YT(v)}" r="${i===n-1?4.2:2.4}" fill="#fff" stroke="#bd8424" stroke-width="${i===n-1?2.4:1.6}"/>`).join("");
+  const dotsL=LOW12.map((v,i)=>`<circle cx="${X(i)}" cy="${YL(v)}" r="${i===n-1?4.2:2.4}" fill="#fff" stroke="#bd3b31" stroke-width="${i===n-1?2.4:1.6}"/>`).join("");
+  const xl=TURN12.map((v,i)=>i%2===0?`<text x="${X(i)}" y="${H-10}" text-anchor="middle" font-size="9.5" fill="#9aa7ba">W${i+1}</text>`:"").join("");
+  document.getElementById("ch-trend2").innerHTML=`
+    ${g}
+    <polyline points="${lineT}" fill="none" stroke="#bd8424" stroke-width="2.2" stroke-linejoin="round"/>
+    <polyline points="${lineL}" fill="none" stroke="#bd3b31" stroke-width="2" stroke-dasharray="6 4" stroke-linejoin="round"/>
+    ${dotsT}${dotsL}${xl}
+    <text x="${X(n-1)}" y="${YT(TURN12[n-1])-12}" text-anchor="middle" font-size="11" font-weight="700" fill="#bd8424">${TURN12[n-1]}天</text>
+    <g font-size="10" fill="#7c8aa0">
+      <line x1="${pl}" y1="${H-1}" x2="${pl+18}" y2="${H-1}" stroke="none"/>
+      <rect x="${W-pr-96}" y="6" width="10" height="3" fill="#bd8424" rx="1.5"/>
+      <text x="${W-pr-82}" y="10">周转天数</text>
+      <rect x="${W-pr-30}" y="6" width="10" height="3" fill="#bd3b31" rx="1.5"/>
+      <text x="${W-pr-16}" y="10">缺货数</text>
+    </g>`;
+}
+
+// ============ ABC 错配：销售占比 vs 库存金额占比 ============
+function drawAbcMis(list){
+  const sorted=[...list].sort((a,b)=>b.sales28-a.sales28);
+  const totSales=sorted.reduce((a,b)=>a+b.sales28,0)||1;
+  const totVal=sorted.reduce((a,b)=>a+b.val,0)||1;
+  let cum=0;const S={A:0,B:0,C:0},V={A:0,B:0,C:0},N={A:0,B:0,C:0};
+  sorted.forEach(s=>{
+    cum+=s.sales28/totSales*100;
+    const k=cum<=70?"A":cum<=90?"B":"C";
+    S[k]+=s.sales28; V[k]+=s.val; N[k]++;
+  });
+  const col={A:"#b08d4e",B:"#178a75",C:"#8590a2"};
+  const rows=["A","B","C"].map(k=>{
+    const sp=S[k]/totSales*100, vp=V[k]/totVal*100, gap=vp-sp;
+    const judge = gap>12 ? "超配 · 去库存" : gap<-12 ? "欠配 · 优先补货" : "基本匹配";
+    const c = gap>12 ? "#bd3b31" : gap<-12 ? "#bd8424" : "#178a75";
+    return `<tr>
+      <td><span class="pill" style="background:${col[k]}18;color:${col[k]}">${k} 类</span><span class="num" style="color:var(--muted);margin-left:5px;font-size:10.5px">${N[k]}个</span></td>
+      <td class="r num">${sp.toFixed(0)}%</td>
+      <td class="r num">${vp.toFixed(0)}%</td>
+      <td class="r num" style="color:${c};font-weight:700">${gap>0?"+":""}${gap.toFixed(0)}pp</td>
+      <td style="color:${c}">${judge}</td>
+    </tr>`;
+  }).join("");
+  const worst=["A","B","C"].map(k=>({k,gap:V[k]/totVal*100-S[k]/totSales*100})).sort((a,b)=>Math.abs(b.gap)-Math.abs(a.gap))[0];
+  const wc = worst.gap>0 ? `${worst.k} 类库存超配 ${worst.gap.toFixed(0)}pp，是把周转拖到危险区的主因` : `${worst.k} 类库存欠配 ${Math.abs(worst.gap).toFixed(0)}pp，缺货预警主要出在这里`;
+  document.getElementById("abc-mis").innerHTML=
+    `<table class="mis-tb">
+      <colgroup><col class="c1"><col class="c2"><col class="c3"><col class="c4"><col class="c5"></colgroup>
+      <thead><tr><th>类别</th><th class="r">销售占比</th><th class="r">库存金额占比</th><th class="r">偏差</th><th>判断</th></tr></thead>
+      <tbody>${rows}</tbody></table>
+      <div class="mis-note">${wc}</div>`;
+}
+
 // ============ ABC 环形图 ============
 function drawAbc(list){
   const sorted=[...list].sort((a,b)=>b.sales28-a.sales28);
@@ -497,6 +737,7 @@ function drawAbc(list){
   });
   document.getElementById("ch-abc").innerHTML=
     `<circle cx="73" cy="73" r="${R}" fill="none" stroke="#f0f2f7" stroke-width="${sw}"/>${segs}`;
+  document.getElementById("abc-n").textContent=list.length;
   document.getElementById("abc-lg").innerHTML=["A","B","C"].map(k=>
     `<div class="lg"><i style="background:${col[k]}"></i>${k} 类 · ${cs[k]} 个<span class="p">${(shares[k]/total*100).toFixed(0)}%</span><span class="n">${cs[k]}</span></div>`
   ).join("");
